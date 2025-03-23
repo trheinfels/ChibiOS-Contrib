@@ -205,6 +205,12 @@ typedef struct {
    */
   usbreqhandler_t               requests_hook_cb;
   /**
+   * @brief   Fallback requests hook callback.
+   * @details This hook allows to be handle requests that are left unhandled
+   *          after the built in default request handler is run.
+   */
+  usbreqhandler_t               requests_hook2_cb;
+  /**
    * @brief   Start Of Frame callback.
    */
   usbcallback_t                 sof_cb;
@@ -254,6 +260,10 @@ struct USBDriver {
    */
   usbep0state_t                 ep0state;
   /**
+   * @brief   Endpoint 0 transfer deferral flag
+   */
+  bool                          ep0defer;
+  /**
    * @brief   Next position in the buffer to be transferred through endpoint 0.
    */
   uint8_t                       *ep0next;
@@ -262,9 +272,19 @@ struct USBDriver {
    */
   size_t                        ep0n;
   /**
+   * @brief   Flag indicating that a zero-length IN packet should be sent through endpoint 0.
+   */
+  bool                          ep0zlp;
+  /**
    * @brief   Endpoint 0 end transaction callback.
    */
   usbcallback_t                 ep0endcb;
+#if (USB_USE_WAIT == TRUE) || defined(__DOXYGEN__)
+  /**
+   * @brief   Endpoint 0 deferral waiting thread.
+   */
+  thread_reference_t            ep0deferthread;
+#endif
   /**
    * @brief   Setup packet buffer.
    */
