@@ -68,9 +68,9 @@
  */
 #if !defined(NRF5_ST_PRIORITY) || defined(__DOXYGEN__)
 #if !defined(SOFTDEVICE_PRESENT)
-#define NRF5_ST_PRIORITY        CORTEX_MAX_KERNEL_PRIORITY
+#define NRF5_ST_PRIORITY        0
 #else
-#define NRF5_ST_PRIORITY        1
+#define NRF5_ST_PRIORITY        2
 #endif
 #endif
 
@@ -119,10 +119,6 @@
 #error "Freeruning (tick-less) mode not supported with TIMER, use RTC"
 #endif
 #endif /* OSAL_ST_MODE == OSAL_ST_MODE_FREERUNNING */
-
-#if !PORT_IRQ_IS_VALID_KERNEL_PRIORITY(NRF5_ST_PRIORITY)
-#error "Invalid IRQ priority assigned to ST driver"
-#endif
 
 /*===========================================================================*/
 /* Driver data structures and types.                                         */
